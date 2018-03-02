@@ -48,6 +48,7 @@ function drawChart(totalSales) {
   appendXAxis(totalSales);
   appendYAxis(totalSales);
   appendLineCharts(totalSales);
+  appendTooltipCharts(totalSales)
 }
 
 function clearCanvas() {
@@ -125,33 +126,36 @@ function appendLineCharts(totalSales)
   .attr("class", "line")
   .attr("d", valueline);
 
-  svg.append("path")
-        .attr("class", "line")
-        .attr("d", valueline(totalSales));
-  var div = d3.select("body").append("div")	
-    .attr("class", "tooltip")				
-    .style("opacity", 0);
-  
-  var parseTime = d3.timeParse("%d-%b-%y"); 
+  // svg.append("path")
+  //       .attr("class", "line")
+  //       .attr("d", valueline(totalSales));
 
-  // Add the scatterplot
-  svg.selectAll("dot")	
-      .data(totalSales)			
-  .enter().append("circle")								
-      .attr("r", 5)		
-      .attr("cx", function(d) { return x(d.month); })		 
-      .attr("cy", function(d) { return y(d.sales); })		
-      .on("mouseover", function(d) {		
-          div.transition()		
-              .duration(200)		
-              .style("opacity", .9);		
-          div.html(d.month.toDateString() + "<br/>"  + d.sales + ' sales')	
-              .style("left", (d3.event.pageX) + "px")		
-              .style("top", (d3.event.pageY - 28) + "px");	
-          })					
-      .on("mouseout", function(d) {		
-          div.transition()		
-              .duration(500)		
-              .style("opacity", 0);	
-      });
+}
+
+function appendTooltipCharts(totalSales)
+{
+  var div = d3.select("body").append("div")	
+  .attr("class", "tooltip")				
+  .style("opacity", 0);
+
+    // Add the scatterplot
+    svg.selectAll("dot")	
+    .data(totalSales)			
+.enter().append("circle")								
+    .attr("r", 5)		
+    .attr("cx", function(d) { return x(d.month); })		 
+    .attr("cy", function(d) { return y(d.sales); })		
+    .on("mouseover", function(d) {		
+        div.transition()		
+            .duration(200)		
+            .style("opacity", .9);		
+        div.html(d.month.toDateString() + "<br/>"  + d.sales + ' sales')	
+            .style("left", (d3.event.pageX) + "px")		
+            .style("top", (d3.event.pageY - 28) + "px");	
+        })					
+    .on("mouseout", function(d) {		
+        div.transition()		
+            .duration(500)		
+            .style("opacity", 0);	
+    });
 }
