@@ -15,7 +15,7 @@ let x, y = null; // scales
 setupCanvasSize();
 appendSvg("body");
 refreshChart();
-autoRefreshChart(5000);
+// autoRefreshChart(5000);
 
 function autoRefreshChart(miliSeconds) {
   setInterval(function() {
