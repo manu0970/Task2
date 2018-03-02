@@ -15,7 +15,7 @@ let x, y = null; // scales
 setupCanvasSize();
 appendSvg("body");
 refreshChart();
-autoRefreshChart(50000);
+autoRefreshChart(5000);
 
 function autoRefreshChart(miliSeconds) {
   setInterval(function() {
@@ -53,6 +53,7 @@ function drawChart(totalSales) {
 
 function clearCanvas() {
   d3.selectAll("svg > g > *").remove();
+  d3.selectAll("table").remove();
 }
 
 
@@ -138,6 +139,11 @@ function appendTooltipCharts(totalSales)
   .attr("class", "tooltip")				
   .style("opacity", 0);
 
+  var table = d3.select("body").append("table")
+  .attr("width", width + margin.left + margin.right);				
+  table.html( '<tr>     <th>Date</th>      <th>Sales</th>     </tr>' +
+              '<tr>     <td>- (Click any point) </td>      <td>-</td>     </tr>');
+
     // Add the scatterplot
     svg.selectAll("dot")	
     .data(totalSales)			
@@ -157,5 +163,9 @@ function appendTooltipCharts(totalSales)
         div.transition()		
             .duration(500)		
             .style("opacity", 0);	
-    });
+    })
+    .on("click", function(d) {				
+      table.html( '<tr>     <th>Date</th>      <th>Sales</th>     </tr>' +
+                  `<tr>     <td> ${d.month.toDateString()} </td>     <td> ${d.sales} </td>   </tr>`)	  
+      });
 }
