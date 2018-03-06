@@ -36,7 +36,7 @@ function refreshChart() {
           d.sales = +d.sales;
       });
 
-    clearCanvas();
+    //clearCanvas();
     drawChart(data);
   });
 }
