@@ -204,7 +204,7 @@ function appendLineCharts(totalSales)
   .attr("d", valueline);
 }
 ```
-A pop-up window appears each time the mouse is placed on the point.
+After drawing the line graph, the points representing the data are drawn.
 ```javascript
 function appendTooltipCharts(totalSales)
 {
@@ -218,23 +218,44 @@ function appendTooltipCharts(totalSales)
     .attr("r", 5)		
     .attr("cx", function(d) { return x(d.month); })		 
     .attr("cy", function(d) { return y(d.sales); })		
-    .on("mouseover", function(d) {		
-        div.transition()		
-            .duration(200)		
-            .style("opacity", .9);		
-        div.html(d.month.toDateString() + "<br/>"  + d.sales + ' sales')	
-            .style("left", (d3.event.pageX) + "px")		
-            .style("top", (d3.event.pageY - 28) + "px");	
-        })					
-    .on("mouseout", function(d) {		
-        div.transition()		
-            .duration(500)		
-            .style("opacity", 0);	
     })
 }
 ```
-## Create the table
+Now the "tooltip" function is added, each time the mouse passes over the point its data will be displayed. And when the mouse leaves the point it will hide the data again.
+```diff
+function appendTooltipCharts(totalSales)
+{
+  var div = d3.select("body").append("div")	
+  .attr("class", "tooltip")				
+  .style("opacity", 0);
 
+    svg.selectAll("dot")	
+    .data(totalSales)			
+.enter().append("circle")								
+    .attr("r", 5)		
+    .attr("cx", function(d) { return x(d.month); })		 
+    .attr("cy", function(d) { return y(d.sales); })		
++    .on("mouseover", function(d) {		
++        div.transition()		
++            .duration(200)		
++            .style("opacity", .9);		
++        div.html(d.month.toDateString() + "<br/>"  + d.sales + ' sales')	
++            .style("left", (d3.event.pageX) + "px")		
++            .style("top", (d3.event.pageY - 28) + "px");	
++        })					
++    .on("mouseout", function(d) {		
++        div.transition()		
++            .duration(500)		
++            .style("opacity", 0);	
+    })
+}
+```
+![Chart Line](./pictures_to_github_readme/CharLine.JPG "Chart Line")
+
+## Create the table
+Now a table is added to show the data in another way.
+
+The following code lines are added within the "appendTooltipCharts ()" function. Which adds an empty table to the html document.
 ```diff
   var div = d3.select("body").append("div")	
   .attr("class", "tooltip")				
@@ -248,6 +269,7 @@ function appendTooltipCharts(totalSales)
     // Add the scatterplot
     svg.selectAll("dot")	
 ```
+A new functionality is added to the same function. Each time you click on a point, the data will be shown in more detail in the table.
 ```diff
     .on("mouseout", function(d) {		
         div.transition()		
@@ -260,6 +282,7 @@ function appendTooltipCharts(totalSales)
 +      });
 }
 ```
+Finally, the styles of the table are configured by adding the following code to the styles.css file.
 ```css
 table {
   /* border-collapse: collapse;
@@ -280,3 +303,7 @@ th {
   color: white;
 }
 ```
+![Chart Line Table](./pictures_to_github_readme/ChartLineTable.JPG "Chart Line Table")
+
+To see the final result, visit the following link:
+https://manu0970.github.io/Task2/
